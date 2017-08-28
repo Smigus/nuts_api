@@ -1,0 +1,23 @@
+{
+	"AWSEBDockerrunVersion": 1,
+	"volumes": [
+		{
+			"name": "test_deploy",
+			"host": {
+				"sourcePath": "/app"
+			}
+		}
+	],
+	"containerDefinitions": [
+		{
+			"name": "test_deploy",
+			"essential": true,
+			"portMappings": [
+				{
+					"hostPort": 80,
+					"containerPort": 4000
+				}
+			]
+		}
+	]
+}
