@@ -22,15 +22,4 @@ defmodule NutsApi.Web.Router do
     post "/unlike/:id", PostApiController, :unlike
     post "/comment/:id/:text", PostApiController, :add_comment
   end
-
-  scope "/", NutsApi.Web do
-    pipe_through :browser
-
-    get "/", PageController, :index
-  end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", NutsApi.Web do
-  #   pipe_through :api
-  # end
 end
