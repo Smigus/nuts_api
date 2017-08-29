@@ -4,7 +4,7 @@ defmodule NutsApi.Content.Post do
   alias NutsApi.Content.Post
 
 
-  @derive {Poison.Encoder, only: [:image_url, :num_likes, :user, :comments]}
+  @derive {Poison.Encoder, only: [:image_url, :num_likes, :user, :comments, :id]}
   schema "posts" do
     field :image_url, :string
     field :num_likes, :integer
