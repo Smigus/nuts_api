@@ -17,6 +17,7 @@ defmodule NutsApi.Web.Router do
     pipe_through :api
 
     get "/posts", PostApiController, :index
+    post "/posts", PostApiController, :create
     post "/like/:id", PostApiController, :like
     post "/unlike/:id", PostApiController, :unlike
     post "/comment/:id/:text", PostApiController, :add_comment
