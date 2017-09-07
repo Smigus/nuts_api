@@ -23,10 +23,10 @@ defmodule NutsApi.Web.PostApiController do
     send_resp conn, 200, ""
   end
 
-  def add_comment(conn, %{"id" => post_id, "text" => text}) do
+  def add_comment(conn, %{"id" => post_id}) do
     post = Content.get_post!(post_id)
-    text = String.replace(text, "_", " ")
-    with {:ok, comment} <- Content.create_comment_for_post(post, %{text: text}) do
+    with %{"text" => text} <- conn.body_params,
+      {:ok, comment} <- Content.create_comment_for_post(post, %{text: text}) do
       send_resp conn, 200, ""
     else
       {:error, reason} ->
@@ -35,22 +35,13 @@ defmodule NutsApi.Web.PostApiController do
   end
 
   def create(conn, _params) do
-    with {:ok, encoded_body, _} <- Plug.Conn.read_body(conn),
-      {:ok, body} <- Poison.decode(encoded_body),
-      {:ok, post} <- create_post_from_request_body(body) do
+    with %{"image_url" => image_url, "author" => %{"name" => name, "emoji_profile_pic" => emoji}} <- conn.body_params,
+      {:ok, user} <- Content.create_user(%{name: name, emoji_profile_pic: emoji}),
+      {:ok, post} <- Content.create_post_for_user(user, %{image_url: image_url, num_likes: 0}) do
       send_resp conn, 200, ""
     else
       {:error, reason} ->
         send_resp conn, 400, "Request body error"
-    end
-  end
-
-  def create_post_from_request_body(body = %{"image_url" => image_url, "author" => %{"name" => name, "emoji_profile_pic" => emoji}}) do
-    with {:ok, user} <- Content.create_user(%{name: name, emoji_profile_pic: emoji}),
-      {:ok, post} <- Content.create_post_for_user(user, %{image_url: image_url, num_likes: 0}) do
-      {:ok, post}
-    else
-      {:error, reason} -> {:error, reason}
     end
   end
 

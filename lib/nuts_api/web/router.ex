@@ -20,6 +20,6 @@ defmodule NutsApi.Web.Router do
     post "/posts", PostApiController, :create
     post "/like/:id", PostApiController, :like
     post "/unlike/:id", PostApiController, :unlike
-    post "/comment/:id/:text", PostApiController, :add_comment
+    post "/comment/:id", PostApiController, :add_comment
   end
 end
